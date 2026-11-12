@@ -1,4 +1,3 @@
-
 #include <Geode/Geode.hpp>
 #include <Geode/modify/CCKeyboardDispatcher.hpp>
 
@@ -19,13 +18,11 @@ class $modify(EveryKeyJumpKeyboard, CCKeyboardDispatcher) {
 
         if (!playLayer) {
             heldKeys.clear();
-
             return CCKeyboardDispatcher::dispatchKeyboardMSG(
                 key, isKeyDown, isKeyRepeat, timestamp
             );
         }
 
-        // Check whether the mod is enabled.
         bool enabled = Mod::get()->getSettingValue<bool>("enabled");
 
         if (!enabled) {
@@ -39,7 +36,6 @@ class $modify(EveryKeyJumpKeyboard, CCKeyboardDispatcher) {
             );
         }
 
-        // Ignore unknown keys.
         if (key == KEY_Unknown) {
             return CCKeyboardDispatcher::dispatchKeyboardMSG(
                 key, isKeyDown, isKeyRepeat, timestamp
@@ -49,13 +45,10 @@ class $modify(EveryKeyJumpKeyboard, CCKeyboardDispatcher) {
         int keyID = static_cast<int>(key);
 
         if (isKeyDown) {
-            // Ignore keyboard auto-repeat.
             if (!isKeyRepeat) {
                 bool wasEmpty = heldKeys.empty();
-
                 heldKeys.insert(keyID);
 
-                // First key pressed: hold jump.
                 if (wasEmpty && !heldKeys.empty()) {
                     playLayer->handleButton(true, 1, true);
                 }
@@ -64,7 +57,6 @@ class $modify(EveryKeyJumpKeyboard, CCKeyboardDispatcher) {
         else {
             heldKeys.erase(keyID);
 
-            // Last key released: release jump.
             if (heldKeys.empty()) {
                 playLayer->handleButton(false, 1, true);
             }
