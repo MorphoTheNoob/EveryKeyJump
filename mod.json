@@ -1,3 +1,4 @@
+
 {
   "geode": "5.3.0",
   "gd": {
@@ -11,10 +12,18 @@
     "source": "https://github.com/MorphoTheNoob/EveryKeyJump"
   },
   "repository": "https://github.com/MorphoTheNoob/EveryKeyJump",
-  "description": "Makes every keyboard key control the Geometry Dash jump button.",
+  "description": "Makes every keyboard key act as a jump input.",
   "tags": [
     "gameplay",
     "utility"
   ],
+  "settings": {
+    "enabled": {
+      "type": "bool",
+      "name": "Enable EveryKeyJump",
+      "description": "Turn EveryKeyJump on or off.",
+      "default": true
+    }
+  },
   "dependencies": {}
 }
