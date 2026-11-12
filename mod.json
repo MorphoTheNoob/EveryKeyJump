@@ -1,0 +1,20 @@
+{
+  "geode": "5.3.0",
+  "gd": {
+    "win": "2.2081"
+  },
+  "id": "morphothenoob.everykeyjump",
+  "name": "EveryKeyJump",
+  "version": "v1.0.0",
+  "developer": "MorphoTheNoob",
+  "links": {
+    "source": "https://github.com/MorphoTheNoob/EveryKeyJump"
+  },
+  "repository": "https://github.com/MorphoTheNoob/EveryKeyJump",
+  "description": "Makes every keyboard key control the Geometry Dash jump button.",
+  "tags": [
+    "gameplay",
+    "utility"
+  ],
+  "dependencies": {}
+}
