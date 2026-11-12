@@ -21,7 +21,7 @@ jobs:
         id: build
         uses: geode-sdk/build-geode-mod@main
         with:
-          sdk: given
+          sdk: latest
           target: Win64
 
       - name: Upload mod
