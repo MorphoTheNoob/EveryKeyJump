@@ -1,0 +1,30 @@
+
+name: Build EveryKeyJump
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Setup Geode SDK
+        uses: geode-sdk/cli@main
+
+      - name: Build mod
+        run: geode build
+
+      - name: Upload mod
+        uses: actions/upload-artifact@v4
+        with:
+          name: EveryKeyJump
+          path: "*.geode"
