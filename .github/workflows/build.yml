@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout repository
@@ -17,14 +17,15 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Setup Geode SDK
-        uses: geode-sdk/cli@main
-
-      - name: Build mod
-        run: geode build
+      - name: Build Geode mod
+        id: build
+        uses: geode-sdk/build-geode-mod@main
+        with:
+          sdk: given
+          target: Win64
 
       - name: Upload mod
         uses: actions/upload-artifact@v4
         with:
           name: EveryKeyJump
-          path: "*.geode"
+          path: ${{ steps.build.outputs.build-output }}/*.geode
