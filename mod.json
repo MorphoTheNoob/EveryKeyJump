@@ -1,8 +1,8 @@
 
 {
-  "geode": "5.3.0",
+  "geode": "6.0.0",
   "gd": {
-    "win": "2.2081"
+    "win": "2.2091"
   },
   "id": "morphothenoob.everykeyjump",
   "name": "EveryKeyJump",
