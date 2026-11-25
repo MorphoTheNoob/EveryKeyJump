@@ -17,20 +17,19 @@
     "gameplay",
     "utility"
   ],
-"settings": {
-  "enabled": {
-    "type": "bool",
-    "name": "Enable EveryKeyJump",
-    "description": "Turn EveryKeyJump on or off.",
-    "default": true
-  },
-  "blacklist": {
-    "type": "string",
-    "name": "Keys Blacklist",
-    "description": "Keys that should not trigger jumps. Separate keys with commas.",
-    "default": ""
-  }
-}
+  "settings": {
+    "enabled": {
+      "type": "bool",
+      "name": "Enable EveryKeyJump",
+      "description": "Turn EveryKeyJump on or off.",
+      "default": true
+    },
+    "blacklist": {
+      "type": "string",
+      "name": "Keys Blacklist",
+      "description": "Keys that should not trigger jumps. Separate keys with commas.",
+      "default": ""
+    }
   },
   "dependencies": {}
 }
