@@ -1,16 +1,32 @@
 # EveryKeyJump
 
-**EveryKeyJump** is a Geometry Dash mod for Geode that makes every keyboard key act as a jump input.
+<p align="center">
+
+**Made by [MorphoYT](https://gdbrowser.com/u/MorphoYT)**
+
+*One keyboard. Every key. Every jump.*
+
+</p>
+
+---
+
+## What is EveryKeyJump?
+
+EveryKeyJump is a Geometry Dash mod that turns almost every supported keyboard key into a jump input!
+
+Forget being limited to one key. Use your keyboard your way and take control of every jump.
 
 ## Features
 
-- Every letter key triggers jump.
-- Every number key triggers jump.
-- Symbols and punctuation keys are supported.
-- Holding a key holds the jump input.
-- Releasing a key releases the jump input.
-- No manual key configuration required.
+- **Every Key Can Jump** — Turn supported keyboard keys into jump inputs.
+- **Custom Key Blacklist** — Prevent specific keys from triggering jumps.
+- **Enable / Disable** — Easily toggle the mod.
+- **Simple Settings** — Customize everything through Geode.
 
-## Developer
+## Settings
 
-Created by **MorphoTheNoob**.
+Inside the Geode settings, you can:
+
+- Enable or disable EveryKeyJump.
+- Add keys to your blacklist.
+- Separate blacklist entries with commas.
