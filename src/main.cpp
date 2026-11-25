@@ -12,7 +12,9 @@ using namespace geode::prelude;
 
 static std::unordered_set<int> heldKeys;
 static std::deque<bool> inputQueue;
+static PlayLayer* currentLayer = nullptr;
 static bool jumpHeld = false;
+static bool playerWasAlive = false;
 
 static bool isBlacklisted(int key) {
     auto blacklist = Mod::get()->getSettingValue<std::string>("blacklist");
@@ -39,48 +41,20 @@ class $modify(EveryKeyJumpKeyboard, CCKeyboardDispatcher) {
         bool isKeyRepeat,
         double timestamp
     ) {
-        auto* playLayer = GameManager::get()->m_playLayer;
+        if (key != KEY_Unknown) {
+            int keyID = static_cast<int>(key);
 
-        if (!playLayer) {
-            heldKeys.clear();
-            inputQueue.clear();
-            jumpHeld = false;
-
-            return CCKeyboardDispatcher::dispatchKeyboardMSG(
-                key, isKeyDown, isKeyRepeat, timestamp
-            );
-        }
-
-        if (!Mod::get()->getSettingValue<bool>("enabled")) {
-            heldKeys.clear();
-            inputQueue.clear();
-
-            if (jumpHeld) {
-                playLayer->handleButton(false, 1, true);
-                jumpHeld = false;
+            if (!isBlacklisted(keyID)) {
+                if (isKeyDown && !isKeyRepeat) {
+                    if (heldKeys.insert(keyID).second) {
+                        inputQueue.push_back(true);
+                        inputQueue.push_back(false);
+                    }
+                }
+                else if (!isKeyDown) {
+                    heldKeys.erase(keyID);
+                }
             }
-
-            return CCKeyboardDispatcher::dispatchKeyboardMSG(
-                key, isKeyDown, isKeyRepeat, timestamp
-            );
-        }
-
-        int keyID = static_cast<int>(key);
-
-        if (key == KEY_Unknown || isBlacklisted(keyID)) {
-            return CCKeyboardDispatcher::dispatchKeyboardMSG(
-                key, isKeyDown, isKeyRepeat, timestamp
-            );
-        }
-
-        if (isKeyDown && !isKeyRepeat) {
-            if (heldKeys.insert(keyID).second) {
-                inputQueue.push_back(true);
-                inputQueue.push_back(false);
-            }
-        }
-        else if (!isKeyDown) {
-            heldKeys.erase(keyID);
         }
 
         return CCKeyboardDispatcher::dispatchKeyboardMSG(
@@ -90,12 +64,27 @@ class $modify(EveryKeyJumpKeyboard, CCKeyboardDispatcher) {
 };
 
 class $modify(EveryKeyJumpPlayLayer, PlayLayer) {
+    bool init(GJGameLevel* level, bool dontCreateObjects) {
+        if (!PlayLayer::init(level, dontCreateObjects)) {
+            return false;
+        }
+
+        currentLayer = this;
+        jumpHeld = false;
+        playerWasAlive = false;
+
+        return true;
+    }
+
     void update(float dt) {
         PlayLayer::update(dt);
 
+        if (currentLayer != this) {
+            return;
+        }
+
         if (!Mod::get()->getSettingValue<bool>("enabled")) {
             inputQueue.clear();
-            heldKeys.clear();
 
             if (jumpHeld) {
                 this->handleButton(false, 1, true);
@@ -103,6 +92,23 @@ class $modify(EveryKeyJumpPlayLayer, PlayLayer) {
             }
 
             return;
+        }
+
+        auto* player = m_player1;
+
+        if (!player || player->m_isDead) {
+            playerWasAlive = false;
+            jumpHeld = false;
+            return;
+        }
+
+        if (!playerWasAlive) {
+            playerWasAlive = true;
+
+            if (!heldKeys.empty()) {
+                this->handleButton(true, 1, true);
+                jumpHeld = true;
+            }
         }
 
         if (!inputQueue.empty()) {
@@ -120,5 +126,16 @@ class $modify(EveryKeyJumpPlayLayer, PlayLayer) {
             this->handleButton(shouldHold, 1, true);
             jumpHeld = shouldHold;
         }
+    }
+
+    void onQuit() {
+        if (currentLayer == this) {
+            currentLayer = nullptr;
+            jumpHeld = false;
+            playerWasAlive = false;
+            inputQueue.clear();
+        }
+
+        PlayLayer::onQuit();
     }
 };
